@@ -1,0 +1,78 @@
+<html>
+<head>
+	<script type="text/javascript">
+	// http://www.w3schools.com/jsref/jsref_obj_date.asp
+
+function makeItFriday(date) {
+    var numberOfDaysToFriday = 4 - date.getDay();
+    if (numberOfDaysToFriday < 0){
+        numberOfDaysToFriday  += 5;
+    }
+    if(numberOfDaysToFriday == 0 && date.getHours()>= 17){
+        numberOfDaysToFriday = 7; 
+    }
+    date.setDate(date.getDate() + numberOfDaysToFriday);
+    date.setHours(17,0,0);
+    return date;
+}
+
+function timeToFriday () {
+    var nextFriday = makeItFriday(new Date());
+    var today = new Date();
+    var diffInMiliSeconds = nextFriday.getTime() - today.getTime();
+    return {
+        day: parseInt(diffInMiliSeconds / (1000*60*60*24)),
+        hour: parseInt((diffInMiliSeconds % (1000*60*60*24)) / (1000 * 60 * 60)),
+        minute: parseInt((diffInMiliSeconds % (1000*60*60)) / (1000 * 60)),
+        second: parseInt((diffInMiliSeconds % (1000 * 60 )) / 1000),
+        toString: function () {
+            return this.format(this.day) + ": " +
+                this.format(this.hour) + ": " +
+                this.format(this.minute) + ": " +
+                this.format(this.second);
+        },
+        format: function (number) {
+            if(number < 10){
+                return "0" + number
+            }
+            return number + "";
+        }
+    };
+}
+
+
+function showTime(){
+	var box = document.getElementById("box");
+    box.innerHTML = timeToFriday();
+    var dayTime = timeToFriday();
+    if(dayTime.day == 0 && dayTime.hour== 0 && dayTime.minute == 0 && dayTime.second == 0){
+        alert('dddd');
+    }
+}
+
+setInterval(showTime, 1000);
+</script>
+
+<style type="text/css">
+
+div {
+	color: green;
+    margin: auto;
+    position: absolute;
+    top: 40%;
+    left: 30%;
+    font-size: 100px; 
+}
+
+#box {
+    border: 1px solid green;
+    padding: 0 10px;
+    margin-left: 40px;
+}
+
+</style>
+</head>
+<body>
+	<div>Time to birthday<br><span id="box"></span></div>
+</body>
+</html>
